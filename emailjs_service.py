@@ -31,7 +31,7 @@ def send_email_via_brevo(to_email, subject, message, verification_link=None):
         data = {
             'sender': {
                 'name': 'MushGuard',
-                'email': 'noreply@brevo.com'
+                'email': 'carlsulla05@gmail.com'
             },
             'to': [{'email': to_email}],
             'subject': subject,
