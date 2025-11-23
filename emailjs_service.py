@@ -31,7 +31,7 @@ def send_email_via_brevo(to_email, subject, message, verification_link=None):
         data = {
             'sender': {
                 'name': 'MushGuard',
-                'email': 'carlsulla05@gmail.com'
+                'email': 'noreply@brevo.com'
             },
             'to': [{'email': to_email}],
             'subject': subject,
@@ -40,6 +40,7 @@ def send_email_via_brevo(to_email, subject, message, verification_link=None):
                 <p><a href="{verification_link}" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px;">Click here to verify your email</a></p>
                 <p>Or copy this link: <a href="{verification_link}">{verification_link}</a></p>
                 <p><strong>MushGuard Team</strong></p>
+                <p><small>Sent on behalf of carlsulla05@gmail.com</small></p>
             """,
             'replyTo': {'email': 'carlsulla05@gmail.com', 'name': 'MushGuard Support'}
         }
