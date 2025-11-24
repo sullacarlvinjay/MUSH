@@ -9,7 +9,7 @@ echo "Running migrations..."
 python manage.py migrate --noinput
 
 echo "Making user admin..."
-python make_admin.py
+python make_admin.py || echo "Admin creation failed, continuing..."
 
 echo "Admin script completed"
 echo "Starting server..."
