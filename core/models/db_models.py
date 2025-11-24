@@ -10,7 +10,7 @@ class MushroomImage(models.Model):
     
     image = models.ImageField(
         _("mushroom image"),
-        upload_to='static/mushroom_images/',
+        upload_to='mushroom_images/',
         validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png'])],
         help_text=_("Upload a clear image of the mushroom (JPG, JPEG, or PNG)")
     )
@@ -38,7 +38,7 @@ class UnknownMushroom(models.Model):
     scientific_name = models.CharField(max_length=150, blank=True)
     origin = models.TextField(blank=True)
     image = models.ImageField(
-        upload_to='static/unknown_mushrooms/',
+        upload_to='unknown_mushrooms/',
         validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png'])]
     )
     latitude = models.DecimalField(max_digits=9, decimal_places=6)

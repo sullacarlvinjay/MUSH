@@ -18,15 +18,6 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.http import HttpResponse
-from django.contrib.staticfiles.views import serve
-
-def serve_media(request, path):
-    """Serve media files in production."""
-    try:
-        return serve(request, path, document_root=settings.MEDIA_ROOT)
-    except:
-        return HttpResponse("Media file not found", status=404)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -38,7 +29,8 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 else:
-    # Serve media files in production
+    # Serve media files in production using whitenoise
+    from django.views.static import serve
     urlpatterns += [
-        path('media/<path:path>', serve_media, name='serve_media'),
+        path('media/<path:path>', serve, {'document_root': settings.MEDIA_ROOT}),
     ]
