@@ -5,15 +5,22 @@ echo "Environment variables:"
 echo "DEBUG=$DEBUG"
 echo "ALLOWED_HOSTS=$ALLOWED_HOSTS"
 
-# Only run migrations on first deploy (check if database exists)
-if [ "$FIRST_DEPLOY" = "true" ]; then
-    echo "Running migrations for first deploy..."
-    python manage.py migrate --noinput
-fi
+# NEVER run migrations on startup - they corrupt the database
+echo "Skipping migrations - database should already be set up"
 
-echo "Making user admin..."
-python make_admin.py
+# Only create admin if no users exist (prevents recreation)
+python -c "
+import os
+import django
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myproject.settings')
+django.setup()
+from django.contrib.auth.models import User
+if User.objects.count() == 0:
+    print('Creating admin user...')
+    User.objects.create_superuser('admin', 'admin@mushguard.com', 'admin123')
+else:
+    print('Users already exist, skipping admin creation')
+"
 
-echo "Admin script completed"
 echo "Starting server..."
 gunicorn myproject.wsgi:application --bind 0.0.0.0:$PORT
