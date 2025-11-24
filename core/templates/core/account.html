@@ -74,7 +74,7 @@
                             <tr>
                                 <td>
                                     {% if r.image %}
-                                        <img src="{{ r.image.url }}" alt="{{ r.name }}" style="height: 50px; width: auto; border-radius: 4px;">
+                                        <img src="{% static r.image.name %}" alt="{{ r.name }}" style="height: 50px; width: auto; border-radius: 4px;">
                                     {% endif %}
                                 </td>
                                 <td>{{ r.name }}</td>

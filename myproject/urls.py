@@ -18,9 +18,27 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.http import HttpResponse
+from django.contrib.staticfiles.views import serve
+
+def serve_media(request, path):
+    """Serve media files in production."""
+    try:
+        return serve(request, path, document_root=settings.MEDIA_ROOT)
+    except:
+        return HttpResponse("Media file not found", status=404)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', include('core.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+# Serve media files in development
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+else:
+    # Serve media files in production
+    urlpatterns += [
+        path('media/<path:path>', serve_media, name='serve_media'),
+    ]
