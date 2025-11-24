@@ -75,7 +75,7 @@ body {
 /* Hero Section - 2025 Modern Design */
 .hero-section {
     padding: 4rem 0;
-    background: linear-gradient(135deg, rgba(15, 85, 58, 0.35) 0%, rgba(255, 255, 255, 0.9) 100%), url('/media/logo/background.png');
+    background: linear-gradient(135deg, rgba(15, 85, 58, 0.35) 0%, rgba(255, 255, 255, 0.9) 100%), url('/static/logo/background.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
