@@ -8,6 +8,7 @@ app_name = 'core'
 
 urlpatterns = [
     path('', views.landing, name='landing'),
+    path('setup-admin/', views.setup_admin, name='setup_admin'),
     path('login/', views.VerifiedLoginView.as_view(), name='login'),
     path('signup/', views.signup_view, name='signup'),
     path('verify/<uuid:token>/', views.verify_email, name='verify_email'),
