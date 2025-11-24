@@ -62,16 +62,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'myproject.wsgi.application'
 
-# Database configuration - use PostgreSQL in production, SQLite in development
-import dj_database_url
-
+# Database configuration
 if os.getenv('DATABASE_URL'):
-    # Production - Use PostgreSQL external database
-    DATABASES = {
-        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'), conn_max_age=600)
-    }
+    try:
+        DATABASES = {
+            'default': dj_database_url.parse(os.getenv('DATABASE_URL'))
+        }
+        print("Using PostgreSQL database")
+    except Exception as e:
+        print(f"PostgreSQL connection failed: {e}")
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+            }
+        }
 else:
-    # Development - Use SQLite
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -92,9 +98,9 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
-STATICFILES_STORAGE = 'whitenoise.storage.StaticFilesStorage'  # Use simpler storage for deployment
+# Don't use staticfiles collection, serve directly from static/
+STATICFILES_STORAGE = None
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -103,13 +109,8 @@ MEDIA_ROOT = BASE_DIR / 'media'
 if not DEBUG:
     WHITENOISE_USE_FINDERS = True
     WHITENOISE_SERVE_FILES_AT_ROOT = False
-    # Add media files to static files collection for WhiteNoise
-    STATICFILES_DIRS = [
-        BASE_DIR / 'static',
-        BASE_DIR / 'media',  # Include media files in static collection
-    ]
-    # Also serve media files directly
-    WHITENOISE_ROOT = BASE_DIR / 'staticfiles'
+    # Serve directly from static/ directory
+    WHITENOISE_ROOT = BASE_DIR / 'static'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = '/login/'
