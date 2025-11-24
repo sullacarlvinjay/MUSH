@@ -108,6 +108,8 @@ if not DEBUG:
         BASE_DIR / 'static',
         BASE_DIR / 'media',  # Include media files in static collection
     ]
+    # Also serve media files directly
+    WHITENOISE_ROOT = BASE_DIR / 'staticfiles'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = '/login/'

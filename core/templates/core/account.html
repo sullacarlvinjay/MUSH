@@ -1,4 +1,5 @@
 {% load static %}
+{% load media_filters %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -74,7 +75,7 @@
                             <tr>
                                 <td>
                                     {% if r.image %}
-                                        <img src="{{ r.image.url }}" alt="{{ r.name }}" style="height: 50px; width: auto; border-radius: 4px;">
+                                        <img src="{{ r.image.url|media_to_static }}" alt="{{ r.name }}" style="height: 50px; width: auto; border-radius: 4px;">
                                     {% endif %}
                                 </td>
                                 <td>{{ r.name }}</td>

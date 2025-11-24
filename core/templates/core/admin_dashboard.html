@@ -1,4 +1,5 @@
 {% load static %}
+{% load media_filters %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -137,7 +138,7 @@
                                     {% for r in pending_reports %}
                                     <tr>
                                         <td style="width:80px">
-                                            <img src="{{ r.image.url }}" alt="{{ r.name }}" style="width:70px;height:50px;object-fit:cover;border-radius:6px;"/>
+                                            <img src="{{ r.image.url|media_to_static }}" alt="{{ r.name }}" style="width:70px;height:50px;object-fit:cover;border-radius:6px;"/>
                                         </td>
                                         <td class="small" style="min-width: 220px;">
                                             <div class="border rounded p-2 bg-light">
@@ -223,7 +224,7 @@
                                     {% for r in confirmed_reports %}
                                     <tr>
                                         <td style="width:80px">
-                                            <img src="{{ r.image.url }}" alt="{{ r.name }}" style="width:70px;height:50px;object-fit:cover;border-radius:6px;"/>
+                                            <img src="{{ r.image.url|media_to_static }}" alt="{{ r.name }}" style="width:70px;height:50px;object-fit:cover;border-radius:6px;"/>
                                         </td>
                                         <td class="small" style="min-width: 260px;">
                                             <div class="border rounded p-2 bg-light">
@@ -254,7 +255,7 @@
                                                 data-lon="{{ r.longitude }}"
                                                 data-status="{{ r.status }}"
                                                 data-color="{{ r.pin_color|default:'#0d6efd' }}"
-                                                data-image="{{ r.image.url }}"
+                                                data-image="{{ r.image.url|media_to_static }}"
                                                 data-description="{{ r.description|default_if_none:'' }}"
                                                 data-scientific-name="{{ r.scientific_name|default_if_none:'' }}"
                                                 data-origin="{{ r.origin|default_if_none:'' }}">
