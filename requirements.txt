@@ -8,7 +8,7 @@ requests==2.31.0
 
 # Database options - uncomment one to try:
 # Option 1: psycopg2-binary versions (try 2.9.6 first, then 2.9.5, 2.9.4, 2.9.3)
-psycopg2-binary==3.0
+psycopg2-binary==2.9.6
 # psycopg2-binary==2.9.5
 # psycopg2-binary==2.9.4
 # psycopg2-binary==2.9.3
