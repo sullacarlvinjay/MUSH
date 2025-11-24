@@ -99,6 +99,16 @@ STATICFILES_STORAGE = 'whitenoise.storage.StaticFilesStorage'  # Use simpler sto
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# In production, serve media files through WhiteNoise
+if not DEBUG:
+    WHITENOISE_USE_FINDERS = True
+    WHITENOISE_SERVE_FILES_AT_ROOT = False
+    # Add media files to static files collection for WhiteNoise
+    STATICFILES_DIRS = [
+        BASE_DIR / 'static',
+        BASE_DIR / 'media',  # Include media files in static collection
+    ]
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
