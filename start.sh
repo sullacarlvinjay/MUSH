@@ -5,8 +5,11 @@ echo "Environment variables:"
 echo "DEBUG=$DEBUG"
 echo "ALLOWED_HOSTS=$ALLOWED_HOSTS"
 
-echo "Running migrations..."
-python manage.py migrate --noinput
+# Only run migrations on first deploy (check if database exists)
+if [ "$FIRST_DEPLOY" = "true" ]; then
+    echo "Running migrations for first deploy..."
+    python manage.py migrate --noinput
+fi
 
 echo "Making user admin..."
 python make_admin.py
