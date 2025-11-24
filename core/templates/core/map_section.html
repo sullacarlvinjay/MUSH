@@ -1,5 +1,6 @@
 <!-- Map Section Component -->
 {% load static %}
+{% load media_filters %}
 <section id="map" class="map-section py-5">
     <div class="container">
         <div class="section-header text-center mb-4">
@@ -60,7 +61,7 @@
                         </div>
                         <script type="application/json" id="reports-json">[
                             {% for r in reports %}
-                            {"lat": {{ r.latitude }}, "lon": {{ r.longitude }}, "name": "{{ r.name|escapejs }}", "img": "{{ r.image.url }}", "date": "{{ r.created_at|date:'Y-m-d H:i' }}", "status": "{{ r.status }}", "color": "{{ r.pin_color|default:'#0d6efd' }}" }{% if not forloop.last %},{% endif %}
+                            {"lat": {{ r.latitude }}, "lon": {{ r.longitude }}, "name": "{{ r.name|escapejs }}", "img": "{{ r.image.url|media_to_static }}", "date": "{{ r.created_at|date:'Y-m-d H:i' }}", "status": "{{ r.status }}", "color": "{{ r.pin_color|default:'#0d6efd' }}" }{% if not forloop.last %},{% endif %}
                             {% endfor %}
                         ]</script>
                     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
@@ -250,7 +251,7 @@
                                         <div class="card h-100 report-card mushroom-species-card" 
                                              data-species="{{ species_name }}" 
                                              style="transition: transform 0.2s ease;">
-                                            <img src="{{ primary_mushroom.image.url }}" class="card-img-top" alt="{{ primary_mushroom.name }}">
+                                            <img src="{{ primary_mushroom.image.url|media_to_static }}" class="card-img-top" alt="{{ primary_mushroom.name }}">
                                             <div class="card-body">
                                                 <h6 class="card-title d-flex justify-content-between align-items-start">
                                                     <span>
