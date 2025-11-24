@@ -9,8 +9,16 @@ services:
       - key: DEBUG
         value: "False"
       - key: SECRET_KEY
-        generateValue: true
+        value: "8b4929a4c8569f8c47a2fc53dba62424"
       - key: ALLOWED_HOSTS
         value: "mushguard.onrender.com,*.onrender.com,localhost,127.0.0.1"
+      - key: DATABASE_URL
+        value: "postgresql://mushguard_db_ydmd_user:dbjcef4oREmHtH0q3BAR9M7lNh9N7iEK@dpg-d4i0846mcj7s73ca5vt0-a.singapore-postgres.render.com/mushguard_db_ydmd"
+      - key: EMAIL_HOST_USER
+        value: "carlsulla05@gmail.com"
+      - key: EMAIL_HOST_PASSWORD
+        value: "zqhf adjy vixy nebx"
+      - key: BREVO_API_KEY
+        value: "SET_IN_RENDER_DASHBOARD"
       - key: DEFAULT_FROM_EMAIL
         value: "MushGuard <carlsulla05@gmail.com>"
