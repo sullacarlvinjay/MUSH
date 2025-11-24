@@ -101,8 +101,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/static/'
+MEDIA_ROOT = BASE_DIR / 'static'
 
 # In production, serve media files through WhiteNoise
 if not DEBUG:
