@@ -3,7 +3,6 @@ services:
     name: mushroom-web
     env: python
     plan: free
-    runtime: "python-3.11.0"
     buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput --clear --verbosity=2"
     startCommand: "./start.sh"
     envVars:

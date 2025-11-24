@@ -18,4 +18,3 @@ psycopg2-binary==2.9.6
 
 # Option 3: No PostgreSQL (use SQLite only)
 # (remove all psycopg lines above)
-
