@@ -5,6 +5,17 @@ gunicorn==21.2.0
 whitenoise==6.6.0
 dj-database-url==2.1.0
 requests==2.31.0
-# Try psycopg2-binary==2.9.6 first, if fails try: 2.9.5, 2.9.4, 2.9.3
+
+# Database options - uncomment one to try:
+# Option 1: psycopg2-binary versions (try 2.9.6 first, then 2.9.5, 2.9.4, 2.9.3)
 psycopg2-binary==2.9.6
+# psycopg2-binary==2.9.5
+# psycopg2-binary==2.9.4
+# psycopg2-binary==2.9.3
+
+# Option 2: psycopg3 (modern successor)
+# psycopg>=3.0
+
+# Option 3: No PostgreSQL (use SQLite only)
+# (remove all psycopg lines above)
 
