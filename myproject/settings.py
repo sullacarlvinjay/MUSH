@@ -102,7 +102,7 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'static'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # In production, serve media files through WhiteNoise
 if not DEBUG:
@@ -110,8 +110,8 @@ if not DEBUG:
     WHITENOISE_SERVE_FILES_AT_ROOT = False
     # Serve static files from static/ directory
     WHITENOISE_ROOT = BASE_DIR / 'static'
-    # Also serve media files from static/ directory
-    WHITENOISE_MEDIA_ROOT = BASE_DIR / 'static'
+    # Also serve media files from media/ directory  
+    WHITENOISE_MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = '/login/'
