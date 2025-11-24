@@ -24,4 +24,5 @@ urlpatterns = [
     path('robots.txt', views.robots_txt, name='robots_txt'),
     path('sitemap.xml', views.sitemap_xml, name='sitemap_xml'),
     path('sw.js', views.service_worker, name='service_worker'),
+    path('debug-images/', views.debug_images, name='debug_images'),
 ]

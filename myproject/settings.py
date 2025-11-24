@@ -63,12 +63,21 @@ TEMPLATES = [
 WSGI_APPLICATION = 'myproject.wsgi.application'
 
 # Database configuration
-if os.getenv('DATABASE_URL'):
+if DEBUG:
+    # Use SQLite for local development
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+    print("Using SQLite database for local development")
+elif os.getenv('DATABASE_URL'):
     try:
         DATABASES = {
             'default': dj_database_url.parse(os.getenv('DATABASE_URL'))
         }
-        print("Using PostgreSQL database")
+        print("Using PostgreSQL database for production")
     except Exception as e:
         print(f"PostgreSQL connection failed: {e}")
         DATABASES = {
