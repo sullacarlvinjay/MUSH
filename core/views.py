@@ -8,7 +8,6 @@ from django.contrib import messages
 from django.urls import reverse
 from django.conf import settings
 from django.core.mail import send_mail
-import os
 from .forms import MushroomImageForm, UnknownMushroomForm, UnknownMushroomAdminForm, UserRegistrationForm
 from .models import UnknownMushroom, UserProfile
 from .model_utils import analyze_mushroom
@@ -499,64 +498,3 @@ def analyze_mushroom_view(request):
     except Exception as e:
         logger.error(f"Error in analyze_mushroom: {str(e)}")
         return JsonResponse({'error': str(e)}, status=500)
-
-
-def debug_images(request):
-    """Debug view to find mushroom images and their locations."""
-    from .models.db_models import UnknownMushroom, MushroomImage
-    
-    images_info = []
-    
-    # Check UnknownMushroom entries
-    for mushroom in UnknownMushroom.objects.all():
-        if mushroom.image:
-            images_info.append({
-                'type': 'UnknownMushroom',
-                'id': mushroom.id,
-                'name': mushroom.name,
-                'image_name': mushroom.image.name,
-                'image_url': mushroom.image.url,
-                'image_path': mushroom.image.path,
-                'file_exists': os.path.exists(mushroom.image.path) if mushroom.image else False,
-                'media_root': settings.MEDIA_ROOT,
-                'media_url': settings.MEDIA_URL,
-            })
-    
-    # Check MushroomImage entries
-    for img in MushroomImage.objects.all():
-        if img.image:
-            images_info.append({
-                'type': 'MushroomImage',
-                'id': img.id,
-                'image_name': img.image.name,
-                'image_url': img.image.url,
-                'image_path': img.image.path,
-                'file_exists': os.path.exists(img.image.path) if img.image else False,
-                'media_root': settings.MEDIA_ROOT,
-                'media_url': settings.MEDIA_URL,
-            })
-    
-    # Also check what's in the media directory
-    media_dir_info = {
-        'media_root_exists': os.path.exists(settings.MEDIA_ROOT),
-        'media_root': settings.MEDIA_ROOT,
-        'unknown_mushrooms_dir': os.path.join(settings.MEDIA_ROOT, 'unknown_mushrooms'),
-        'unknown_mushrooms_exists': os.path.exists(os.path.join(settings.MEDIA_ROOT, 'unknown_mushrooms')),
-    }
-    
-    if media_dir_info['unknown_mushrooms_exists']:
-        try:
-            files = os.listdir(os.path.join(settings.MEDIA_ROOT, 'unknown_mushrooms'))
-            media_dir_info['files_in_unknown_mushrooms'] = files
-        except Exception as e:
-            media_dir_info['files_error'] = str(e)
-    
-    return JsonResponse({
-        'images': images_info,
-        'media_info': media_dir_info,
-        'settings': {
-            'DEBUG': settings.DEBUG,
-            'MEDIA_URL': settings.MEDIA_URL,
-            'MEDIA_ROOT': str(settings.MEDIA_ROOT),
-        }
-    })
