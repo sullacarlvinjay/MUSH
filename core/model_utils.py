@@ -1,8 +1,4 @@
-# Configure TensorFlow for CPU-only BEFORE any imports
-import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-
+# Configure logger
 import logging
 from PIL import Image
 from typing import Dict, Any
@@ -10,10 +6,6 @@ import random
 import numpy as np
 import cv2
 
-# Import TensorFlow Lite classifier
-from .models.tensorflow_classifier import analyze_mushroom_with_tensorflow
-
-# Configure logger
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
@@ -161,31 +153,16 @@ def estimate_mushroom_type(features: Dict[str, Any]) -> Dict[str, Any]:
         return {'error': str(e)}
 
 def analyze_mushroom(image: Image.Image) -> Dict[str, Any]:
-    """Enhanced mushroom analysis with TensorFlow Lite models as primary method.
+    """Enhanced mushroom analysis using computer vision.
     
-    Uses TensorFlow Lite models for accurate analysis, falls back to computer vision.
+    Uses computer vision techniques to analyze mushroom features.
     """
     try:
-        logger.info("Running enhanced mushroom analysis with TensorFlow Lite...")
+        logger.info("Running computer vision mushroom analysis...")
         
         # Validate image
         if image is None:
             return {'error': 'No image provided'}
-        
-        # Try TensorFlow Lite analysis first (best method)
-        try:
-            tf_result = analyze_mushroom_with_tensorflow(image)
-            if 'error' not in tf_result:
-                logger.info("TensorFlow Lite analysis successful")
-                tf_result['note'] = 'Analysis using trained TensorFlow Lite models. High accuracy predictions.'
-                return tf_result
-            else:
-                logger.warning(f"TensorFlow Lite analysis failed: {tf_result['error']}")
-        except Exception as e:
-            logger.warning(f"TensorFlow Lite analysis error: {str(e)}")
-        
-        # Fallback to computer vision analysis
-        logger.info("Falling back to computer vision analysis...")
         
         # Analyze image features
         features = analyze_mushroom_features(image)
@@ -206,12 +183,12 @@ def analyze_mushroom(image: Image.Image) -> Dict[str, Any]:
                 'format': image.format
             },
             'image_features': features,
-            'note': 'Analysis based on computer vision feature extraction. TensorFlow Lite models unavailable - results should be verified by experts.'
+            'note': 'Analysis based on computer vision feature extraction. Results should be verified by experts.'
         })
         
         logger.info(f"Computer vision analysis completed: {'Edible' if result.get('is_edible') else 'Not edible'}")
         return result
         
     except Exception as e:
-        logger.error(f"Error in enhanced mushroom analysis: {str(e)}")
+        logger.error(f"Error in computer vision mushroom analysis: {str(e)}")
         return {'error': str(e)}
