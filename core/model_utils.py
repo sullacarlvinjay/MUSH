@@ -5,6 +5,11 @@ import random
 import numpy as np
 import cv2
 
+# Configure TensorFlow for CPU-only to avoid GPU warnings
+import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
 # Import TensorFlow Lite classifier
 from .models.tensorflow_classifier import analyze_mushroom_with_tensorflow
 
