@@ -1,14 +1,14 @@
+# Configure TensorFlow for CPU-only BEFORE any imports
 import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
 import logging
 import numpy as np
 from PIL import Image
 import tensorflow as tf
 from pathlib import Path
 from typing import Dict, Any, Tuple
-
-# Configure TensorFlow for CPU-only to avoid GPU warnings
-os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # Suppress TensorFlow logging
 
 logger = logging.getLogger(__name__)
 
