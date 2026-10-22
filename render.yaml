@@ -1,26 +1,35 @@
 services:
   - type: web
-    name: mushroom-web
-    env: python
+    name: mushguard
+    runtime: python
     plan: free
-    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput --clear --verbosity=2"
-    startCommand: "./start.sh"
+    buildCommand: "bash build.sh"
+    startCommand: "bash start.sh"
     envVars:
       - key: PYTHON_VERSION
         value: "3.11.0"
       - key: DEBUG
         value: "False"
       - key: SECRET_KEY
-        value: "8b4929a4c8569f8c47a2fc53dba62424"
+        generateValue: true
       - key: ALLOWED_HOSTS
-        value: "mushguard.onrender.com,*.onrender.com,localhost,127.0.0.1"
-      - key: DATABASE_URL
-        value: "postgresql://mushguard_db_ydmd_user:dbjcef4oREmHtH0q3BAR9M7lNh9N7iEK@dpg-d4i0846mcj7s73ca5vt0-a.singapore-postgres.render.com/mushguard_db_ydmd"
-      - key: EMAIL_HOST_USER
-        value: "carlsulla05@gmail.com"
-      - key: EMAIL_HOST_PASSWORD
-        value: "zqhf adjy vixy nebx"
+        value: "mushguard.onrender.com"
+      - key: WEB_CONCURRENCY
+        value: "2"
+      # Secrets below: set the values in the Render dashboard, never in this file
+      - key: DATABASE_URL           # Supabase > Connect > Session pooler URI
+        sync: false
+      - key: SUPABASE_PROJECT_REF   # the <ref> in https://<ref>.supabase.co
+        sync: false
+      - key: SUPABASE_STORAGE_BUCKET
+        value: "media"
+      - key: SUPABASE_S3_REGION     # Supabase > Storage > S3 Configuration
+        sync: false
+      - key: SUPABASE_S3_ACCESS_KEY_ID
+        sync: false
+      - key: SUPABASE_S3_SECRET_ACCESS_KEY
+        sync: false
       - key: BREVO_API_KEY
-        value: "SET_IN_RENDER_DASHBOARD"
-      - key: DEFAULT_FROM_EMAIL
-        value: "MushGuard <carlsulla05@gmail.com>"
+        sync: false
+      - key: BREVO_SENDER_EMAIL
+        sync: false

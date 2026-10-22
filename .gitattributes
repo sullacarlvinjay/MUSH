@@ -1,0 +1,3 @@
+# Shell scripts must keep LF line endings or they fail on Render (Linux)
+*.sh text eol=lf
+Procfile text eol=lf

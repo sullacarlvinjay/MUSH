@@ -1,16 +1,11 @@
-#!/bin/bash
-
-# Ensure environment variables are loaded
-echo "Environment variables:"
-echo "DEBUG=$DEBUG"
-echo "ALLOWED_HOSTS=$ALLOWED_HOSTS"
+#!/usr/bin/env bash
+set -o errexit
 
 echo "Running migrations..."
 python manage.py migrate --noinput
 
-echo "Making user admin..."
-python make_admin.py || echo "Admin creation failed, continuing..."
-
-echo "Admin script completed"
 echo "Starting server..."
-gunicorn myproject.wsgi:application --bind 0.0.0.0:$PORT
+exec gunicorn myproject.wsgi:application \
+    --bind 0.0.0.0:${PORT:-8000} \
+    --workers ${WEB_CONCURRENCY:-2} \
+    --timeout 120

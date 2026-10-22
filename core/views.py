@@ -1,6 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse, HttpResponse
-from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.views import LoginView
@@ -15,52 +14,13 @@ import logging
 from PIL import Image, UnidentifiedImageError
 import io
 from typing import Optional, Dict, Any
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from django.core.exceptions import ValidationError
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 # Set up logging
 logger = logging.getLogger(__name__)
-
-def setup_admin(request):
-    """Setup admin user when this URL is visited."""
-    try:
-        username = 'admin'
-        email = 'admin@mushguard.com'
-        password = 'tucker11'
-        
-        if User.objects.filter(username=username).exists():
-            # Update existing admin user's password
-            admin_user = User.objects.get(username=username)
-            admin_user.set_password(password)
-            admin_user.save()
-            message = f"Admin user '{username}' password updated to '{password}'!"
-        else:
-            # Create new admin user
-            User.objects.create_superuser(username, email, password)
-            message = f"Admin user '{username}' created successfully!"
-        
-        return HttpResponse(f"""
-        <html>
-        <head><title>Admin Setup</title></head>
-        <body style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px;">
-            <h2 style="color: #28a745;">✅ {message}</h2>
-            <p><strong>Username:</strong> {username}</p>
-            <p><strong>Password:</strong> {password}</p>
-            <p><a href="/admin/">Go to Django Admin</a> | <a href="/">Go to Home</a></p>
-        </body>
-        </html>
-        """)
-    except Exception as e:
-        return HttpResponse(f"""
-        <html>
-        <head><title>Admin Setup Error</title></head>
-        <body style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px;">
-            <h2 style="color: #dc3545;">❌ Error creating admin user: {str(e)}</h2>
-            <p><a href="/">Go to Home</a></p>
-        </body>
-        </html>
-        """)
 
 def landing(request):
     """Render the simple landing page with greeting and analyze button."""
@@ -438,7 +398,8 @@ def admin_manage_reports(request):
         'STATUS_COLOR_MAP': STATUS_COLOR_MAP,
     })
 
-@csrf_exempt
+@login_required
+@require_POST
 def predict_mushroom(request):
     """Handle image upload and return prediction results."""
     if request.method == 'POST' and request.FILES.get('image'):
@@ -470,31 +431,3 @@ def predict_mushroom(request):
         'success': False,
         'error': 'No image provided'
     })
-
-@csrf_exempt
-def analyze_mushroom_view(request):
-    """Handle image upload and analysis."""
-    if request.method != 'POST':
-        return JsonResponse({'error': 'Only POST method is allowed'}, status=405)
-    
-    try:
-        # Get the image from the request
-        image_file = request.FILES.get('image')
-        if not image_file:
-            return JsonResponse({'error': 'No image provided'}, status=400)
-        
-        # Read and process the image
-        image_data = image_file.read()
-        image = Image.open(io.BytesIO(image_data))
-        
-        # Analyze the mushroom
-        result = analyze_mushroom(image)
-        
-        if 'error' in result:
-            return JsonResponse({'error': result['error']}, status=500)
-        
-        return JsonResponse(result)
-        
-    except Exception as e:
-        logger.error(f"Error in analyze_mushroom: {str(e)}")
-        return JsonResponse({'error': str(e)}, status=500)

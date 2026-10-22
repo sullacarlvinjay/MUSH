@@ -58,33 +58,29 @@ class BrevoEmailBackend(ConsoleBackend):
         """
         try:
             # Prepare Brevo API payload
+            sender_email = settings.BREVO_SENDER_EMAIL
             payload = {
                 'sender': {
                     'name': 'MushGuard',
-                    'email': 'carlsulla05@gmail.com'  # Must be verified in Brevo
+                    'email': sender_email  # Must be verified in Brevo
                 },
                 'to': [{'email': email} for email in message.recipients()],
                 'subject': message.subject,
                 'htmlContent': message.body,
                 'replyTo': {
-                    'email': 'carlsulla05@gmail.com',
+                    'email': sender_email,
                     'name': 'MushGuard Support'
                 }
             }
-            
+
             headers = {
                 'api-key': self.api_key,
                 'Content-Type': 'application/json'
             }
-            
-            logger.debug(f"Brevo API Key: {self.api_key}")
-            logger.debug(f"Sending to Brevo API: {self.api_url}")
-            logger.debug(f"Data: {payload}")
-            
+
             response = requests.post(self.api_url, json=payload, headers=headers, timeout=30)
-            
+
             logger.debug(f"Brevo response status: {response.status_code}")
-            logger.debug(f"Brevo response body: {response.text}")
             
             if response.status_code == 201:  # Success
                 logger.info(f"Email sent successfully via Brevo to {message.recipients()}")

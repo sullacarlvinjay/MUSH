@@ -1,6 +1,10 @@
+# Secrets
+.env
+
 # Virtual environment
 venv/
 env/
+.venv/
 
 # Python cache
 __pycache__/
@@ -11,8 +15,7 @@ __pycache__/
 # Django
 *.log
 db.sqlite3
-# Keep all media directories - user uploads are critical
-!media/
+staticfiles/
 
 # IDE
 .vscode/
