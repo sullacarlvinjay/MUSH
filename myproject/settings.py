@@ -150,6 +150,13 @@ STORAGES = {
     'default': DEFAULT_STORAGE,
     'staticfiles': {'BACKEND': 'whitenoise.storage.CompressedStaticFilesStorage'},
 }
+# Also serve straight from static/ so the site keeps its CSS and images even
+# if collectstatic didn't run during the build
+WHITENOISE_USE_FINDERS = True
+
+# OpenStreetMap refuses tile requests that carry no Referer header, and
+# Django's default 'same-origin' policy strips it for cross-site requests
+SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024
 FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024
@@ -167,7 +174,6 @@ if not DEBUG:
     CSRF_COOKIE_SECURE = True
     SECURE_HSTS_SECONDS = int(os.getenv('SECURE_HSTS_SECONDS', '3600'))
     SECURE_CONTENT_TYPE_NOSNIFF = True
-    SECURE_REFERRER_POLICY = 'same-origin'
 
 # Email: Brevo API with console fallback
 EMAIL_BACKEND = 'core.email_backends.BrevoEmailBackend'
