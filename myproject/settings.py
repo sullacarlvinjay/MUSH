@@ -4,6 +4,7 @@ Django settings for myproject project.
 
 from pathlib import Path
 import os
+from email.utils import parseaddr
 from dotenv import load_dotenv
 import dj_database_url
 from django.core.exceptions import ImproperlyConfigured
@@ -178,7 +179,8 @@ if not DEBUG:
 # Email: Brevo API with console fallback
 EMAIL_BACKEND = 'core.email_backends.BrevoEmailBackend'
 BREVO_API_KEY = os.getenv('BREVO_API_KEY', '')
-BREVO_SENDER_EMAIL = os.getenv('BREVO_SENDER_EMAIL', '')  # must be verified in Brevo
+# Must be verified in Brevo; accepts "you@example.com" or "Name <you@example.com>"
+BREVO_SENDER_EMAIL = parseaddr(os.getenv('BREVO_SENDER_EMAIL', ''))[1]
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', f'MushGuard <{BREVO_SENDER_EMAIL}>')
 EMAIL_SUBJECT_PREFIX = '[MushGuard] '
 
